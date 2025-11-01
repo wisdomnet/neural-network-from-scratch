@@ -14,14 +14,32 @@ model = modules.Sequential([
     modules.Tanh(),
 ])
 
+
 trainer.train(
     model,
     x_train,
     y_train,
     losses.MSE(),
     optimizers.SGD(model, learning_rate=0.01),
-    epochs=1000,
+    epochs=100000,
 )
 
+
+
+"""
 for x in x_train:
     print(x.tolist(), model.forward(x).tolist())
+"""
+
+"""
+trainer.train_batch_gd(
+    model,
+    x_train,
+    y_train,
+    losses.MSE(),
+    optimizers.GradientDescent(model, learning_rate=0.01),
+    epochs=100000,
+)
+"""
+
+
