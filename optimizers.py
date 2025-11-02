@@ -8,7 +8,12 @@ class Optimizer:
     def __init__(self, module: modules.Module):
         self.module = module
 
-    def step(self):
+    def step(self, num_samples: int = 1):
+        """
+        Performs a single optimization step.
+        num_samples: The number of samples used to accumulate the gradients.
+                     Used for averaging in Batch or Mini-Batch Gradient Descent.
+        """
         raise NotImplementedError()
 
     def zero_gradients(self):
@@ -27,15 +32,29 @@ class SGD(Optimizer):
         self.learning_rate = learning_rate
         self.momentum = momentum
         self.v = [np.zeros_like(param) for param in module.parameters()]
+ 
+    def step(self, num_samples: int = 1):
+        """
+        Performs a single SGD (with momentum) step.
+        This method computes the average gradient based on num_samples
+        before applying the momentum update.
+        """
+        if num_samples <= 0:
+            return
 
-    def step(self):
         parameters = self.module.parameters()
         gradients = self.module.gradients()
         for i in range(len(parameters)):
+            # Calculate the average gradient for the batch/mini-batch
+            avg_grad = gradients[i] / num_samples
+            
+            # Apply momentum to the average gradient
             self.v[i] = (
-                self.momentum * self.v[i] + self.learning_rate * gradients[i]
+                self.momentum * self.v[i] + self.learning_rate * avg_grad
             )
             parameters[i] -= self.v[i]
+    
+
 
 
 class GradientDescent(Optimizer):

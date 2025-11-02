@@ -21,15 +21,14 @@ trainer.train(
     y_train,
     losses.MSE(),
     optimizers.SGD(model, learning_rate=0.01),
-    epochs=100000,
+    epochs=10000,
 )
 
 
 
-"""
-for x in x_train:
-    print(x.tolist(), model.forward(x).tolist())
-"""
+
+
+
 
 """
 trainer.train_batch_gd(
@@ -41,5 +40,18 @@ trainer.train_batch_gd(
     epochs=100000,
 )
 """
+
+"""
+trainer.train_mini_batch(
+    model,
+    x_train,
+    y_train,
+    losses.MSE(),
+    optimizers.SGD(model, learning_rate=0.01),
+    10000,
+    1,
+) 
+"""
+
 
 
