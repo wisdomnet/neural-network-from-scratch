@@ -15,13 +15,29 @@ model = modules.Sequential([
 ])
 
 
+
+'''
 trainer.train(
     model,
     x_train,
     y_train,
     losses.MSE(),
-    optimizers.SGD(model, learning_rate=0.01),
-    epochs=10000,
+    optimizers.GD(model, learning_rate=0.01),
+    epochs=100,
+)
+'''
+
+
+
+
+trainer.train_batch(
+    model,
+    x_train,
+    y_train,
+    losses.MSE(),
+    optimizers.GD(model, learning_rate=0.01),
+    epochs=100,
+    batch_size=2,
 )
 
 
@@ -30,28 +46,24 @@ trainer.train(
 
 
 
-"""
+
+
+
+
+'''
 trainer.train_batch_gd(
     model,
     x_train,
     y_train,
     losses.MSE(),
-    optimizers.GradientDescent(model, learning_rate=0.01),
-    epochs=100000,
+    optimizers.GD(model, learning_rate=0.01),
+    epochs=1000,
 )
-"""
+'''
 
-"""
-trainer.train_mini_batch(
-    model,
-    x_train,
-    y_train,
-    losses.MSE(),
-    optimizers.SGD(model, learning_rate=0.01),
-    10000,
-    1,
-) 
-"""
+
+
+
 
 
 

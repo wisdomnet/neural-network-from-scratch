@@ -36,14 +36,30 @@ model = modules.Sequential([
     modules.Softmax()
 ])
 
+
+
 trainer.train(
     model,
     x_train[:3000],
     y_train[:3000],
     losses.CrossEntropy(),
-    optimizers.SGD(model, learning_rate=0.001),
+    optimizers.GD(model, learning_rate=0.001),
     epochs=30,
 )
+
+
+'''
+trainer.train_batch(
+    model,
+    x_train[:3000],
+    y_train[:3000],
+    losses.CrossEntropy(),
+    optimizers.GD(model, learning_rate=0.001),
+    epochs=30,
+    batch_size=100,
+)
+'''
+
 
 # Compute accuracy over the whole test set
 score = 0

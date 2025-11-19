@@ -61,8 +61,7 @@ def train_batch_gd(
         print(f"{i+1}/{epochs} error={error:.5f}")
     return errors
 
-
-def train_mini_batch(
+def train_batch(
     module: modules.Module,
     x_train: np.ndarray,
     y_train: np.ndarray,
@@ -72,8 +71,8 @@ def train_mini_batch(
     batch_size: int,
 ) -> list[float]:
     """
-    Performs training using Mini-Batch Gradient Descent.
-    Updates parameters *per mini-batch* using the average gradient
+    Performs training using Batch Gradient Descent.
+    Updates parameters *per batch* using the average gradient
     of that batch.
     """
     errors = []
@@ -93,16 +92,16 @@ def train_mini_batch(
             y_batch = y_train_shuffled[j:j + batch_size]
             batch_len = len(x_batch)
             
-            optimizer.zero_gradients()  # Zero gradients ONCE per mini-batch
+            #1. Zero gradients ONCE per batch
+            optimizer.zero_gradients()  
 
-            # 1. Accumulate gradients for the mini-batch
-            for x, y in zip(x_batch, y_batch):
-                output = module.forward(x)
-                error += loss.loss(y, output)
-                module.backward(loss.loss_prime(y, output))
-            
-            # 2. Update parameters using the mini-batch average gradient
-            optimizer.step(num_samples=batch_len)
+            #2. Calculate average gradients in batch
+            output = module.forward_batch(x_batch)
+            error += loss.loss_batch(y_batch, output)
+            input_grad=loss.loss_prime_batch(y_batch, output)
+            module.backward_batch(input_grad)
+            # 3. Update parameters using average gradients
+            optimizer.step()
 
         error /= num_samples
         errors.append(error)
