@@ -23,15 +23,15 @@ class MSE(Loss):
         return np.mean(np.power(y_true - y_pred, 2))
 
     def loss_prime(self, y_true: np.ndarray, y_pred: np.ndarray) -> np.ndarray:
-        return 2.0 * (y_pred - y_true) / np.size(y_true)
+        n = np.prod(y_true.shape)
+        return 2.0 * (y_pred - y_true) / n
 
     def loss_batch(self, y_true_batch: np.ndarray, y_pred_batch: np.ndarray) -> float:
         return np.mean(np.power(y_true_batch - y_pred_batch, 2))*y_true_batch.shape[0]
 
     def loss_prime_batch(self, y_true_batch: np.ndarray, y_pred_batch: np.ndarray) -> np.ndarray:
-        #print('MSE gradient calculation:')
-        #print(f'input_grad shape: {y_true_batch.shape}')
-        return 2.0 * (y_pred_batch - y_true_batch) / np.size(y_true_batch)
+        n = np.prod(y_true_batch.shape[1:])
+        return 2.0 * (y_pred_batch - y_true_batch) / n
 
 
 

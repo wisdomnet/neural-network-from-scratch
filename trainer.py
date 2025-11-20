@@ -95,13 +95,14 @@ def train_batch(
             #1. Zero gradients ONCE per batch
             optimizer.zero_gradients()  
 
-            #2. Calculate average gradients in batch
+            #2. Accumulate gradients in batch
             output = module.forward_batch(x_batch)
             error += loss.loss_batch(y_batch, output)
-            input_grad=loss.loss_prime_batch(y_batch, output)
+            input_grad = loss.loss_prime_batch(y_batch, output)
             module.backward_batch(input_grad)
             # 3. Update parameters using average gradients
-            optimizer.step()
+            optimizer.step(batch_len)
+            
 
         error /= num_samples
         errors.append(error)
