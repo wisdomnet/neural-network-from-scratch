@@ -23,9 +23,10 @@ trainer.train(
     y_train,
     losses.MSE(),
     optimizers.GD(model, learning_rate=0.01),
-    epochs=100,
+    epochs=30,
 )
 '''
+
 
 
 
@@ -36,9 +37,10 @@ trainer.train_batch(
     y_train,
     losses.MSE(),
     optimizers.GD(model, learning_rate=0.01),
-    epochs=100,
-    batch_size=2,
+    epochs=30,
+    batch_size=1,
 )
+
 
 
 

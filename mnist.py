@@ -24,7 +24,6 @@ def preprocess_input(images: np.ndarray, labels: np.ndarray) -> tuple[np.ndarray
 
 
 x_train, y_train, x_test, y_test = mnist_loader.download_mnist()
-print(f"x_train shape: {x_train.shape}, y_train shape: {y_train.shape}")
 
 
 x_train, y_train = preprocess_input(x_train, y_train)
@@ -39,17 +38,18 @@ model = modules.Sequential([
     modules.Softmax()
 ])
 
-'''
 
+'''
 trainer.train(
     model,
     x_train[:3000],
     y_train[:3000],
     losses.CrossEntropy(),
-    optimizers.GD(model, learning_rate=0.001),
+    optimizers.GD(model, learning_rate=0.1),
     epochs=30,
 )
 '''
+
 
 '''
 trainer.train_batch_gd(
@@ -57,23 +57,28 @@ trainer.train_batch_gd(
     x_train[:3000],
     y_train[:3000],
     losses.CrossEntropy(),
-    optimizers.GD(model, learning_rate=0.001),
-    epochs=30,
+    optimizers.GD(model, learning_rate=1),
+    epochs=300,
 )
 '''
 
 
-'''
+
+
+
+
+
 trainer.train_batch(
     model,
     x_train[:3000],
     y_train[:3000],
     losses.CrossEntropy(),
-    optimizers.GD(model, learning_rate=0.001),
-    epochs=30,
-    batch_size=1000,
+    optimizers.GD(model, learning_rate=1),
+    epochs=300,
+    batch_size=3000,
 )
-'''
+
+
 
 
 
